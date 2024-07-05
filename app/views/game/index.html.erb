@@ -1,0 +1,19 @@
+<aside class="fixed left-0 top-0 h-full flex flex-col items-center justify-center space-y-4 p-4 bg-gray-200">
+  <%= render "sidebar", color: "blue", target: "xPiece", value: "X" %>
+</aside>
+
+<div class="p-4 bg-white shadow-lg rounded-lg">
+  <h3 class="text-xl font-bold mb-4 text-center text-gray-700" data-game-target="message">
+    Player X's turn:
+  </h3>
+  <div class="grid grid-cols-3 gap-2">
+    <% 9.times do %>
+      <%= render "cell", value: "" %>
+    <% end -%>
+  </div>
+  <div class="text-s" data-game-target="restartMessage" data-action="click->game#restart"></div>
+</div>
+
+<aside class="fixed right-0 top-0 h-full flex flex-col items-center justify-center space-y-4 p-4 bg-gray-200">
+  <%= render "sidebar", color: "red", target: "oPiece", value: "O" %>
+</aside>

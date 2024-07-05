@@ -1,0 +1,5 @@
+<div 
+  class="piece <%= size %> <%= "piece-#{value.downcase}" %> border-<%= color %>-500 text-<%= color %>-500 cursor-pointer" 
+  data-game-target="<%= target %>" 
+  data-action="click->game#selectPiece"
+><%= value %></div>

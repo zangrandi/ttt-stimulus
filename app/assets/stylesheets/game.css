@@ -1,0 +1,34 @@
+.tic-tac-toe-cell {
+  width: 100px;
+  height: 100px;
+}
+.piece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  width: 60px;
+  height: 60px;
+  border: 2px solid;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: bold;
+}
+.large {
+  width: 80px;
+  height: 80px;
+  font-size: 32px;
+}
+.medium {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+}
+.small {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+.hidden {
+  display: none;
+}
