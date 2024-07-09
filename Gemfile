@@ -9,6 +9,7 @@ gem "puma", ">= 5.0"
 gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
+gem 'stimulus_reflex'
 gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
@@ -17,6 +18,7 @@ gem 'tailwindcss-rails'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
+  gem "pry-rails"
 end
 
 group :development do
@@ -29,3 +31,5 @@ group :test do
 end
 
 gem "redis", "~> 4.0"
+
+gem "redis-session-store", "~> 0.11.5"

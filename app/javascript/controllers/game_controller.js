@@ -1,6 +1,6 @@
-import { Controller } from "@hotwired/stimulus"
+import ApplicationController from './application_controller'
 
-export default class extends Controller {
+export default class extends ApplicationController {
   static targets = [
     "cell",
     "message", 
@@ -10,6 +10,11 @@ export default class extends Controller {
   ];
 
   connect() {
+    super.connect();
+    this.startGame();
+  }
+
+  startGame() {
     this.currentPlayer = "X"; // Start with player X
     this.selectedPiece = null;
     this.cells = Array.from(this.cellTargets);
@@ -29,22 +34,37 @@ export default class extends Controller {
 
     this.clearSelection();
     this.selectedPiece = piece;
-    piece.classList.add("ring", "ring-offset-2", "ring-blue-500");
+
+    if (piece.dataset.piece === 'x')
+      piece.classList.add("ring", "ring-offset-2", "ring-blue-500");
+    else
+      piece.classList.add("ring", "ring-offset-2", "ring-red-500");
   }
 
   placePiece(event) {
     if (!this.selectedPiece) {
-      return; // No piece selected
+      return;
     }
 
     const cell = event.target;
 
-    if (cell.textContent !== "") {
-      return; // Cell already played
+    if (cell.textContent !== "" && 
+        this.getIntSize(cell.dataset.size) >= this.getIntSize(this.selectedPiece.dataset.size)) {
+      return;
     }
 
+    if (this.selectedPiece.dataset.size === 'large')
+      cell.classList.add("text-8xl")
+    else if (this.selectedPiece.dataset.size === 'medium')
+      cell.classList.add("text-5xl")
+    else if (this.selectedPiece.dataset.size === 'small')
+      cell.classList.add("text-2xl")
+
     cell.textContent = this.selectedPiece.textContent;
+
+    cell.classList.remove("text-blue-700", "text-red-700");
     cell.classList.add(this.currentPlayer === "X" ? "text-blue-700" : "text-red-700");
+    cell.dataset.size = this.selectedPiece.dataset.size
 
     this.selectedPiece.classList.add("hidden")
     this.selectedPiece = null;
@@ -67,7 +87,7 @@ export default class extends Controller {
 
   clearSelection() {
     this.xPieceTargets.concat(this.oPieceTargets).forEach(piece => {
-      piece.classList.remove("ring", "ring-offset-2", "ring-blue-500");
+      piece.classList.remove("ring", "ring-offset-2", "ring-blue-500", "ring-red-500");
     });
   }
 
@@ -78,15 +98,26 @@ export default class extends Controller {
   checkWin() {
     const winningCombinations = [
       [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-      [0, 3, 4], [1, 4, 7], [2, 5, 8], // Columns
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
       [0, 4, 8], [2, 4, 6] // Diagonals
     ];
 
     return winningCombinations.some(combination => {
       const [a, b, c] = combination;
-      return this.cells[a].textContent === this.currentPlayer &&
+      if (this.cells[a].textContent === this.currentPlayer &&
              this.cells[a].textContent === this.cells[b].textContent &&
-             this.cells[a].textContent === this.cells[c].textContent;
+             this.cells[a].textContent === this.cells[c].textContent) {
+        this.highlightWinningCells(combination);
+        return true
+      }
+    });
+  }
+
+  highlightWinningCells(combination) {
+    combination.forEach(index => {
+      const cell = this.cells[index];
+      cell.classList.add("winning-cell");
+      cell.style.animation = "pop 0.5s ease-in-out";
     });
   }
 
@@ -96,13 +127,40 @@ export default class extends Controller {
 
   enableRestart() {
     const target = this.restartMessageTarget;
-    target.textContent = "Restart";
+    target.classList.remove("hidden");
+    return;
   }
 
-  restartGame() {
-    const elements = document.querySelectorAll('.cell');
-    elements.forEach(element => {
-      element.classList.remove('hidden');
+  disableRestart() {
+    const target = this.restartMessageTarget;
+    target.classList.add("hidden");
+    return;
+  }
+
+  restartGame(event) {
+    this.clearSelection();
+
+    this.cells.forEach(cell => {
+      cell.textContent = ""
+      cell.classList.remove("winning-cell")
     });
+
+    this.xPieceTargets.concat(this.oPieceTargets).forEach(piece => {
+      piece.classList.remove("hidden");
+    });
+
+    this.disableRestart()
+    this.startGame()
+  }
+
+  getIntSize(size) {
+    switch (size) {
+      case 'large':
+        return 2
+      case 'medium':
+        return 1
+      case 'small':
+        return 0
+    }    
   }
 }
