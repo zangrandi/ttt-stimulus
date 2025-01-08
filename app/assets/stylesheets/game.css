@@ -2,6 +2,7 @@
   width: 100px;
   height: 100px;
 }
+
 .piece {
   display: flex;
   align-items: center;
@@ -13,25 +14,41 @@
   border-radius: 50%;
   font-size: 24px;
   font-weight: bold;
+  color: white !important;
 }
+
+.piece-x {
+  background: linear-gradient(145deg, #4a90e2, #007AFF);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.piece-o {
+  background: linear-gradient(145deg, #FF3B30, #FF9500);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .large {
   width: 80px;
   height: 80px;
   font-size: 32px;
 }
+
 .medium {
   width: 60px;
   height: 60px;
   font-size: 24px;
 }
+
 .small {
   width: 40px;
   height: 40px;
   font-size: 20px;
 }
+
 .hidden {
   display: none;
 }
+
 .winning-cell {
   background-color: yellow; /* Change color as needed */
   animation: pop 0.5s ease-in-out infinite;
