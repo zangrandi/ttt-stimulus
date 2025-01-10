@@ -1,0 +1,19 @@
+<% 
+  classes = [
+    "tic-tac-toe-cell",
+    "cell", 
+    @text_class_name,
+    @color_class_name
+  ].compact.join(" ")
+%>
+
+<% classes += " winning-cell" if @winner %>
+
+<div
+  class="<%= classes %>" 
+  data-game-target="cell" 
+  data-action="click->game#placePiece"
+  data-cell-id="<%= @cell_id %>"
+  data-size="<%= @size %>"
+  data-value="<%= @value %>"
+><%= @value %></div>

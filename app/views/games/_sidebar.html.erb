@@ -1,0 +1,9 @@
+<% 2.times do |n| %>
+  <%= render "piece", size: 2, color:, target:, value:, n: %>
+<% end -%>
+<% 3.times do |n| %>
+  <%= render "piece", size: 1, color:, target:, value:, n: %>
+<% end -%>
+<% 3.times do |n| %>
+  <%= render "piece", size: 0, color:, target:, value:, n: %>
+<% end -%>

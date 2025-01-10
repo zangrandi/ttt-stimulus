@@ -8,8 +8,14 @@
       Player X's turn:
     </h3>
     <div class="grid grid-cols-3 gap-2">
-      <% 9.times do %>
-        <%= render "cell", value: "" %>
+      <% @game.state["board"].each_with_index do |value, index| %>
+        <div id="cell-<%= index %>">
+          <%= render CellComponent.new(
+            cell_id: index, 
+            value: value && value["player"],
+            size: value && value["size"]
+          ) %>
+        </div>
       <% end -%>
     </div>
   </div>

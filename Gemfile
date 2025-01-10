@@ -13,8 +13,8 @@ gem 'stimulus_reflex'
 gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
-
-gem 'tailwindcss-rails'
+gem "view_component"
+gem "tailwindcss-rails"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]

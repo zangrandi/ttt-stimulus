@@ -1,0 +1,27 @@
+<% 
+  size_class_name = {
+    2 => "large",
+    1 => "medium",
+    0 => "small"
+  }[size]
+%>
+
+<% 
+  classes = [
+    "piece", 
+    size_class_name,
+    "piece-#{value.downcase}",
+    "border-#{color}-500",
+    "text-#{color}-500",
+    "cursor-pointer"
+  ].join(" ")
+%>
+
+<div 
+  id="piece-<%= size %>-<%= n %>" 
+  class="<%= classes %>"
+  data-game-target="<%= target %>" 
+  data-action="click->game#selectPiece"
+  data-size="<%= size %>"
+  data-piece="<%= value.downcase %>"
+><%= value %></div>

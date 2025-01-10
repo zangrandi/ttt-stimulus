@@ -9,6 +9,8 @@ export default class extends ApplicationController {
     "restartMessage"
   ];
 
+  static values = { token: String };
+
   connect() {
     super.connect();
     this.startGame();
@@ -48,25 +50,21 @@ export default class extends ApplicationController {
 
     const cell = event.target;
 
-    if (cell.textContent !== "" && 
-        this.getIntSize(cell.dataset.size) >= this.getIntSize(this.selectedPiece.dataset.size)) {
+    if (cell.textContent !== "" && cell.dataset.size >= this.selectedPiece.dataset.size) {
       return;
     }
 
-    if (this.selectedPiece.dataset.size === 'large')
-      cell.classList.add("text-8xl")
-    else if (this.selectedPiece.dataset.size === 'medium')
-      cell.classList.add("text-5xl")
-    else if (this.selectedPiece.dataset.size === 'small')
-      cell.classList.add("text-2xl")
-
     cell.textContent = this.selectedPiece.textContent;
 
-    cell.classList.remove("text-blue-700", "text-red-700");
-    cell.classList.add(this.currentPlayer === "X" ? "text-blue-700" : "text-red-700");
-    cell.dataset.size = this.selectedPiece.dataset.size
-
     this.selectedPiece.classList.add("hidden")
+
+    this.stimulate("Game#place_piece", { 
+      token: this.tokenValue,
+      cell_id: cell.dataset.cellId, 
+      size: this.selectedPiece.dataset.size,
+      player: this.currentPlayer
+    });
+
     this.selectedPiece = null;
 
     if (this.checkWin()) {
@@ -107,7 +105,7 @@ export default class extends ApplicationController {
       if (this.cells[a].textContent === this.currentPlayer &&
              this.cells[a].textContent === this.cells[b].textContent &&
              this.cells[a].textContent === this.cells[c].textContent) {
-        this.highlightWinningCells(combination);
+        this.highlightWinningCells(combination);        
         return true
       }
     });
@@ -151,16 +149,5 @@ export default class extends ApplicationController {
 
     this.disableRestart()
     this.startGame()
-  }
-
-  getIntSize(size) {
-    switch (size) {
-      case 'large':
-        return 2
-      case 'medium':
-        return 1
-      case 'small':
-        return 0
-    }    
   }
 }
